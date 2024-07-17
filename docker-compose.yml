@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  main:
+    container_name: main
+    build:
+      context: .
+      target: dev
+    deploy:
+      resources:
+          limits:
+            memory: 2g
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4000:4000
+    command: npm run start:dev
+    env_file:
+      - .env
+    networks:
+      - naologic
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: mongodb
+    volumes:
+      - mongodb-data:/data/db/
+      - mongodb-log:/var/log/mongodb/
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "27017:27017"
+    networks:
+      - naologic
+volumes:
+  mongodb-data:
+    driver: local
+    name: mongo-data
+  mongodb-log:
+    driver: local
+    name: mongo-log
+networks:
+  naologic:
