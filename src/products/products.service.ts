@@ -423,7 +423,7 @@ export class ProductsService {
 
   // To test I use every 1 minute, CronExpression.EVERY_MINUTE
   // But in production we should use the cron expression CronExpression.EVERY_DAY_AT_6AM or whatever time is needed
-  @Cron(CronExpression.EVERY_DAY_AT_6AM)
+  @Cron(CronExpression.EVERY_MINUTE)
   handleCron() {
     // For time purposes we use the parse file to parse a local file.
     this.parseFile('images40.txt', {
