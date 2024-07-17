@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install --only=development
 COPY . .
-RUN npm run build
+CMD ["npm", "run", "start:dev"]
 
 FROM node:22 As prod
 ARG NODE_ENV=prod
@@ -12,5 +12,5 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install --only=production
 COPY . .
-COPY --from=development /usr/src/app/dist ./dist
+RUN npm run build
 CMD ["node", "dist/main.js"]

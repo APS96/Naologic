@@ -3,9 +3,10 @@ import { OpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { Model } from 'mongoose';
 import { nanoid } from 'nanoid';
+import { determinCrontExpression } from 'src/utils/determine-cron-expression';
 import { Product, ProductDocument } from './entities/product.entity';
 import { CsvProduct } from './types/csvProduct';
 import {
@@ -423,7 +424,8 @@ export class ProductsService {
 
   // To test I use every 1 minute, CronExpression.EVERY_MINUTE
   // But in production we should use the cron expression CronExpression.EVERY_DAY_AT_6AM or whatever time is needed
-  @Cron(CronExpression.EVERY_MINUTE)
+  // It depends on Node Env
+  @Cron(determinCrontExpression())
   handleCron() {
     // For time purposes we use the parse file to parse a local file.
     this.parseFile('images40.txt', {
