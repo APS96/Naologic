@@ -30,6 +30,21 @@
 
 ```bash
 $ npm install
+
+# Set the .env based on the .env.example
+
+# APP
+PORT =
+
+# DATABASE
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+DB_HOST =
+
+# OPEN_AI
+OPEN_AI_KEY =
+
 ```
 
 ## Running the app
